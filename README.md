@@ -25,3 +25,16 @@
 *  Styling (All)
 *  Time series animation (Assil)
 *  Documenting our assignment (All)
+
+
+# **Instructions**
+* Make sure git & node.js(+NPM) are installed
+* Clone git repo
+* Open terminal in the root folder of the project
+* $ `npm install` to install all the dependencies
+* $ `npm start` to start the application
+
+# **Where to find stuff?**
+* JavaScript root: `/client/main.js` loads the map & chart javascript
+* Leaflet Map code: `/client/leaflet/Map.js`
+* First example chart code: `/client/charts/CoronaChart.js`
