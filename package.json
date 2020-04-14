@@ -1,0 +1,38 @@
+{
+  "name": "coronavisualized",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "watch": "watchify client/main.js -o public/javascripts/app.js -v",
+    "build": "browserify client/main.js -o public/javascripts/app.js",
+    "start": "npm run watch & nodemon ./bin/www"
+  },
+  "dependencies": {
+    "chart.js": "^2.9.3",
+    "chartjs-plugin-colorschemes": "^0.4.0",
+    "cookie-parser": "^1.4.5",
+    "d3": "^5.9.7",
+    "dotenv": "^8.2.0",
+    "express": "^4.16.4",
+    "express-ip-filter": "^2.0.0",
+    "express-ipfilter": "^1.0.1",
+    "fs": "0.0.1-security",
+    "helmet": "^3.21.1",
+    "http-errors": "^1.6.3",
+    "identifier": "0.0.0",
+    "leaflet": "^1.5.1",
+    "leaflet-ajax": "^2.1.0",
+    "leaflet-providers": "^1.9.1",
+    "math": "0.0.3",
+    "node-cmd": "3.0.0",
+    "pug": "^2.0.0-beta11"
+  },
+  "devDependencies": {
+    "beefy": "^2.1.8",
+    "browserify": "^16.2.3",
+    "compression": "^1.7.4",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.2",
+    "watchify": "^3.11.1"
+  }
+}

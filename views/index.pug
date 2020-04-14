@@ -1,0 +1,11 @@
+extends layout
+
+block content
+	div.left#map
+	div.right
+		h1.graph-title#corona-title Corona visualization graph
+		canvas.graph#corona-graph
+		h1.graph-title#flights-title Flights visualization graph
+		canvas.graph#flights-graph
+
+	script(src="/javascripts/app.js")

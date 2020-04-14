@@ -1,3 +1,6 @@
 venv/
 .idea
 **/.ipynb_checkpoints
+node_modules
+package-lock.json
+public/javascripts/app.js
