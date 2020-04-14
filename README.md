@@ -33,6 +33,7 @@
 * Open terminal in the root folder of the project
 * $ `npm install` to install all the dependencies
 * $ `npm start` to start the application
+* go to http://localhost:3000 to check it out
 
 # **Where to find stuff?**
 * JavaScript root: `/client/main.js` loads the map & chart javascript
