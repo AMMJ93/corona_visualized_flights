@@ -10,7 +10,7 @@ class CoronaChart {
 	constructor() {
 		this.chart = null;
 		this.title = $("h1#corona-title");
-		this.canvas = $("canvas#corona-graph")[0];
+		this.canvas = $("canvas#corona-chart")[0];
 		this.createChart();
 	}
 

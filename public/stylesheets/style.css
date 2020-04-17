@@ -20,6 +20,10 @@ body {
 	height: 100%;
 }
 
+.chart {
+	max-height: 400px;
+}
+
 h1.graph-title {
 	text-align: center;
 }

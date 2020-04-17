@@ -38,4 +38,5 @@
 # **Where to find stuff?**
 * JavaScript root: `/client/main.js` loads the map & chart javascript
 * Leaflet Map code: `/client/leaflet/Map.js`
-* First example chart code: `/client/charts/CoronaChart.js`
+* First example Chart.js code: `/client/charts/CoronaChart.js`
+* First example Plotly code: `/client/charts/FlightChart.js`
