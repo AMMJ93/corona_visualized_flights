@@ -40,3 +40,6 @@
 * Leaflet Map code: `/client/leaflet/Map.js`
 * First example Chart.js code: `/client/charts/CoronaChart.js`
 * First example Plotly code: `/client/charts/FlightChart.js`
+
+# **Node.js**
+* `npm install <package name> --save` installs the package and adds it to package.json (dependency list for this app) 
