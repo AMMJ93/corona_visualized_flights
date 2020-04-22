@@ -31,6 +31,7 @@
 * Make sure git & node.js(+NPM) are installed
 * Clone git repo
 * Copy and rename `client/charts/plotly-secret.example.js` -> `plotly-secret.js`
+* Copy and rename `.env.example` -> `.env` (Fill in the required fields)
 * Open terminal in the root folder of the project
 * $ `npm install` to install all the dependencies
 * $ `npm start` to start the application
