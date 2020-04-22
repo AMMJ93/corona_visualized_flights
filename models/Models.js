@@ -5,8 +5,8 @@ const coronaSchema = new Schema({
 	_id: Schema.Types.ObjectId,
 	type: String,
 	properties: {
-		object_id: Number,
-		country_re: String,
+		id: Number,
+		country: String,
 		last_update: String,
 		lat: Number,
 		lon: Number,
