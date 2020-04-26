@@ -1,117 +1,116 @@
-require('chart.js');
-require('chartjs-plugin-colorschemes');
-const utils = require("../utils");
-
+const username = require("./plotly-secret").username;
+const apikey = require("./plotly-secret").api_key;
 /**
- * Class that implements Chart.js
+ * This chart works with Plotly
  */
-class CoronaChart {
+const plotly = require("plotly.js-basic-dist");
 
-	constructor() {
-		this.chart = null;
-		this.title = $("h1#corona-title");
-		this.canvas = $("canvas#corona-chart")[0];
-		this.createChart();
-	}
+const countries = ["Brazil"];
 
-	setTitle(title) {
-		this.title.html(title);
-	}
+// fetch all data
+fetch("/api/cases").then(response => response.json()).then(json => plotData(json))
 
-	createChart() {
-		this.chart = new Chart(this.canvas.getContext("2d"), {
-			type: 'line',
-			data: {
-				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-				datasets: [{
-					label: 'My First dataset',
-					backgroundColor: window.chartColors.red,
-					borderColor: window.chartColors.red,
-					data: [
-						utils.randomScalingFactor(),
-						utils.randomScalingFactor(),
-						utils.randomScalingFactor(),
-						utils.randomScalingFactor(),
-						utils.randomScalingFactor(),
-						utils.randomScalingFactor(),
-						utils.randomScalingFactor()
-					],
-					fill: false,
-				}, {
-					label: 'My Second dataset',
-					fill: false,
-					backgroundColor: window.chartColors.blue,
-					borderColor: window.chartColors.blue,
-					data: [
-						utils.randomScalingFactor(),
-						utils.randomScalingFactor(),
-						utils.randomScalingFactor(),
-						utils.randomScalingFactor(),
-						utils.randomScalingFactor(),
-						utils.randomScalingFactor(),
-						utils.randomScalingFactor()
-					],
-				}]
-			},
-			options: {
-				responsive: true,
-				title: {
-					display: true,
-					text: 'Chart.js Line Chart'
+// fetch country specific data
+// countries.forEach(c => {
+// 	fetch("/api/" + c)
+// 		.then(response => response.json())
+// 		.then(json => plotCountryData(json));
+// })
+
+
+
+// plot all data 
+function plotData(data) {
+
+	// UPDATE BUTTON
+	var updatemenus = [
+		{
+			buttons: [
+				{
+					args: [],
+					label: 'Visualize over time',
+					method: 'update'
 				},
-				tooltips: {
-					mode: 'index',
-					intersect: false,
-				},
-				hover: {
-					mode: 'nearest',
-					intersect: true
-				},
-				scales: {
-					xAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Month'
-						}
-					}],
-					yAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						}
-					}]
-				}
-			}
-		});
-		this.afterBuildTicks = this.chart.config.options.scales.yAxes[0].afterBuildTicks;
+			],
+			direction: 'left',
+			pad: {'l': 100 },
+			// showactive: true,
+			type: 'buttons',
+			xanchor: 'left',
+			yanchor: 'top'
+		},
+	]
+
+	// ACTUAL DATA
+	var xTrace = [];
+	var yTrace = [];
+
+	// loops through all dates
+	for (let date = 0; date < data.features[0].properties.corona_cases.length; date++) {
+
+		var cases = 0;
+
+		// sum all corona cases for all countries on that date
+		for (let country = 0; country < data.features.length; country++) {
+			cases += data.features[country].properties.corona_cases[date].count
+		}
+
+		// add number of cases to yTrace and the dates from a single country (since the rest is exactly the same) to the yTrace
+		xTrace.push(data.features[0].properties.corona_cases[date].date)
+		yTrace.push(cases)
+
 	}
 
-	contains(label) {
-		return this.chart.data.datasets.some(ds => ds.label === label);
+	// ADD DATA TO X&Y TRACES
+	var fullTrace = {
+		x: xTrace,
+		y: yTrace,
+		type: 'scatter',
+		mode: 'markers',
+	};
+
+	var plotData = [fullTrace]
+
+	// GENERAL LAYOUT
+	var layout = {
+		// width: 1200,
+		// height: 600,
+		responsive: true,
+		autosize: true,
+		updatemenus: updatemenus,
+		xaxis: {
+			rangemode: 'tozero',
+			autorange: true
+		},
+		yaxis: {
+			ticks: 'outside',
+			tickcolor: '#000'
+		}
 	}
 
-	setData(datasets) {
-		this.chart.data.datasets = datasets;
-		this.chart.update();
-	}
-
-	addDataset(dataset) {
-		this.chart.data.datasets.push(dataset);
-		this.chart.update();
-	}
-
-	removeData(label) {
-		this.chart.data.datasets = this.chart.data.datasets.filter(ds => ds.label !== label);
-		this.chart.update();
-	}
-
-	clear() {
-		this.chart.data.datasets = [];
-		this.chart.update();
-	}
+	plotly.newPlot('flights-chart', plotData, layout, { displayModeBar: false });
 }
 
+// plot data for a specific country
+function plotCountryData(data) {
 
-module.exports = new CoronaChart();
+	var xTrace = [];
+	var yTrace = [];
+
+	for (let date = 0; date < data[0].properties.corona_cases.length; date++) {
+		console.log('here')
+		yTrace.push(data[0].properties.corona_cases[date].count)
+		xTrace.push(data[0].properties.corona_cases[date].date)
+	}
+
+	var countryTrace = {
+		x: xTrace,
+		y: yTrace,
+		type: 'scatter',
+		mode: 'markers',
+	};
+
+	var data = [countryTrace]
+
+	plotly.newPlot('flights-chart', data, { displayModeBar: false });
+}

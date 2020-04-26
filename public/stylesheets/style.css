@@ -27,3 +27,11 @@ body {
 h1.graph-title {
 	text-align: center;
 }
+
+#corona-chart {
+	margin-top: 10px;
+}
+
+#flights-chart {
+	margin-top: 50px;
+}

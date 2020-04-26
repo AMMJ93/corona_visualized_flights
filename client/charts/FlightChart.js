@@ -1,78 +1,117 @@
-const username = require("./plotly-secret").username;
-const apikey = require("./plotly-secret").api_key;
+require('chart.js');
+require('chartjs-plugin-colorschemes');
+const utils = require("../utils");
+
 /**
- * This chart works with Plotly
+ * Class that implements Chart.js
  */
-const plotly = require("plotly.js-basic-dist");
+class CoronaChart {
 
-const countries = ["Netherlands"];
-
-// fetch all data
-// fetch("/api/cases").then(response => response.json()).then(json => plotData(json))
-
-// fetch country specific data
-countries.forEach(c => {
-	fetch("/api/" + c)
-		.then(response => response.json())
-		.then(json => plotCountryData(json));
-})
-
-// plot all data 
-function plotData(data) {
-
-	var xTrace = [];
-	var yTrace = [];
-
-	// loop through all dates
-	for (let date = 0; date < data.features[0].properties.corona_cases.length; date++) {
-
-		var cases = 0;
-
-		// sum all corona cases for all countries on that date
-		for (let country = 0; country < data.features.length; country++) {
-			cases += data.features[country].properties.corona_cases[date].count
-		}
-
-		// add number of cases to yTrace and the dates from a single country (since the rest is exactly the same) to the yTrace
-		xTrace.push(data.features[0].properties.corona_cases[date].date)
-		yTrace.push(cases)
-
+	constructor() {
+		this.chart = null;
+		this.title = $("h1#corona-title");
+		this.canvas = $("canvas#corona-chart")[0];
+		this.createChart();
 	}
 
-	var fullTrace = {
-		x: xTrace,
-		y: yTrace,
-		type: 'scatter',
-		mode: 'markers',
-	};
-
-	var data = [fullTrace]
-
-	plotly.newPlot('flights-chart', data, { displayModeBar: false });
-}
-
-// plot data for a specific country
-function plotCountryData(data) {
-
-	var xTrace = [];
-	var yTrace = [];
-
-	for (let date = 0; date < data[0].properties.corona_cases.length; date++) {
-		console.log('here')
-		yTrace.push(data[0].properties.corona_cases[date].count)
-		xTrace.push(data[0].properties.corona_cases[date].date)
+	setTitle(title) {
+		this.title.html(title);
 	}
 
-	console.log(xTrace)
+	createChart() {
+		this.chart = new Chart(this.canvas.getContext("2d"), {
+			type: 'line',
+			data: {
+				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+				datasets: [{
+					label: 'My First dataset',
+					backgroundColor: window.chartColors.red,
+					borderColor: window.chartColors.red,
+					data: [
+						utils.randomScalingFactor(),
+						utils.randomScalingFactor(),
+						utils.randomScalingFactor(),
+						utils.randomScalingFactor(),
+						utils.randomScalingFactor(),
+						utils.randomScalingFactor(),
+						utils.randomScalingFactor()
+					],
+					fill: false,
+				}, {
+					label: 'My Second dataset',
+					fill: false,
+					backgroundColor: window.chartColors.blue,
+					borderColor: window.chartColors.blue,
+					data: [
+						utils.randomScalingFactor(),
+						utils.randomScalingFactor(),
+						utils.randomScalingFactor(),
+						utils.randomScalingFactor(),
+						utils.randomScalingFactor(),
+						utils.randomScalingFactor(),
+						utils.randomScalingFactor()
+					],
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Chart.js Line Chart'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Month'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Value'
+						}
+					}]
+				}
+			}
+		});
+		this.afterBuildTicks = this.chart.config.options.scales.yAxes[0].afterBuildTicks;
+	}
 
-	var countryTrace = {
-		x: xTrace,
-		y: yTrace,
-		type: 'scatter',
-		mode: 'markers',
-	};
+	contains(label) {
+		return this.chart.data.datasets.some(ds => ds.label === label);
+	}
 
-	var data = [countryTrace]
+	setData(datasets) {
+		this.chart.data.datasets = datasets;
+		this.chart.update();
+	}
 
-	plotly.newPlot('flights-chart', data, { displayModeBar: false });
+	addDataset(dataset) {
+		this.chart.data.datasets.push(dataset);
+		this.chart.update();
+	}
+
+	removeData(label) {
+		this.chart.data.datasets = this.chart.data.datasets.filter(ds => ds.label !== label);
+		this.chart.update();
+	}
+
+	clear() {
+		this.chart.data.datasets = [];
+		this.chart.update();
+	}
 }
+
+
+module.exports = new CoronaChart();
