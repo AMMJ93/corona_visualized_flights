@@ -40,7 +40,9 @@ const markers = L.markerClusterGroup({
 		// }
 
 		return new L.DivIcon({
-			html: '<div><span class="marker-cluster-text">' + utils.formatNumber(totalCases) + '</span></div>',
+			html: `<div>
+					<span class="marker-cluster-text">${utils.formatNumber(totalCases)}</span>
+				</div>`,
 			className: 'marker-cluster' + c,
 			iconSize: new L.Point(40, 40)
 		});
@@ -56,8 +58,12 @@ fetch("/api/corona").then(response => response.json())
 		const layers = L.geoJSON(featureCollection, {
 			pointToLayer: function (feature, latlng) {
 				const confirmed = feature.properties.confirmed;
-				const marker = L.circleMarker(latlng, {
-					radius: confirmed > 100000 ? 25 : 10
+				const marker = L.marker(latlng, {
+					icon: new L.DivIcon({
+						className: 'marker marker-medium',
+						iconSize: new L.Point(40, 40),
+						html: `<div><span class="marker-cluster-text">${utils.formatNumber(confirmed)}</span></div>`
+					})
 				});
 				marker.bindPopup(
 					`Country: <b>${feature.properties.country}</b><br />

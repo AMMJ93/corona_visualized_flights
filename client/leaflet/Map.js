@@ -24,7 +24,7 @@ map.on('click', function (e) {
 });
 
 L.tileLayer.provider('CartoDB.PositronOnlyLabels', {
-	attribution: 'created by Soda science',
+	// attribution: 'created by Group',
 	pane: 'labels'
 }).addTo(map);
 
