@@ -13,6 +13,14 @@
 	transition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in;
 }
 
+.marker div {
+	text-align: center;
+	font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+.marker span {
+	line-height: 30px;
+}
 
 .marker-cluster div {
 	width: 50px;
@@ -21,19 +29,16 @@
 	background-repeat: no-repeat;
 }
 
-.marker div {
-	width: 30px;
-	height: 30px;
-	margin-left: 5px;
-	margin-top: 5px;
-
-	text-align: center;
-	border-radius: 15px;
-	font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+.marker-cluster span {
+	line-height: 40px;
 }
 
-.marker span {
-	line-height: 30px;
+.marker-single div {
+	width: 30px;
+	height: 30px;
+	border-radius: 15px;
+	margin-left: 5px;
+	margin-top: 5px;
 }
 
 .marker-small {

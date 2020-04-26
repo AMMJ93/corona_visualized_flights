@@ -21,6 +21,7 @@ L.MarkerCluster.include({
  */
 const markers = L.markerClusterGroup({
 	maxClusterRadius: 120,
+	showCoverageOnHover: false,
 	/**
 	 * Customize creation of clusters
 	 * @param cluster
@@ -28,22 +29,12 @@ const markers = L.markerClusterGroup({
 	 */
 	iconCreateFunction: function (cluster) {
 		const totalCases = cluster.getTotalCases();
-		const childCount = cluster.getChildCount();
-
-		var c = ' marker-cluster-medium';
-		// if (childCount < 10) {
-		// 	c += 'small';
-		// } else if (childCount < 100) {
-		// 	c += 'medium';
-		// } else {
-		// 	c += 'large';
-		// }
 
 		return new L.DivIcon({
 			html: `<div>
 					<span class="marker-cluster-text">${utils.formatNumber(totalCases)}</span>
 				</div>`,
-			className: 'marker-cluster' + c,
+			className: 'marker marker-cluster',
 			iconSize: new L.Point(40, 40)
 		});
 	}
@@ -60,7 +51,7 @@ fetch("/api/corona").then(response => response.json())
 				const confirmed = feature.properties.confirmed;
 				const marker = L.marker(latlng, {
 					icon: new L.DivIcon({
-						className: 'marker marker-medium',
+						className: 'marker marker-single marker-medium',
 						iconSize: new L.Point(40, 40),
 						html: `<div><span class="marker-cluster-text">${utils.formatNumber(confirmed)}</span></div>`
 					})
