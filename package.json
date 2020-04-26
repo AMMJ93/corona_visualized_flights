@@ -23,6 +23,7 @@
     "leaflet": "^1.5.1",
     "leaflet-ajax": "^2.1.0",
     "leaflet-providers": "^1.9.1",
+    "leaflet.markercluster": "^1.4.1",
     "math": "0.0.3",
     "mongoose": "^5.9.10",
     "node-cmd": "3.0.0",

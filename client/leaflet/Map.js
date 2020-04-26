@@ -9,11 +9,19 @@ const map = L.map('map', {
 	preferCanvas: true,
 	zoomControl: false,
 	layers: [light]
-}).setView([51.5, -0.09], 13);
+}).setView([50.205, 11.425], 5);
 
 map.createPane('labels');
 map.getPane('labels').style.zIndex = 500;
 map.getPane('labels').style.pointerEvents = 'none';
+
+/**
+ * Some debug to help get coords
+ */
+map.on('click', function (e) {
+	console.log(e.latlng);
+	console.log(map.getZoom());
+});
 
 L.tileLayer.provider('CartoDB.PositronOnlyLabels', {
 	attribution: 'created by Soda science',
