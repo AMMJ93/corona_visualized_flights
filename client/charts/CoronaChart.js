@@ -8,7 +8,7 @@ const plotly = require("plotly.js-basic-dist");
 const countries = ["Brazil"];
 
 // fetch all data
-fetch("/api/cases").then(response => response.json()).then(json => plotData(json))
+fetch("/api/cases").then(response => response.json()).then(json => plotData(json));
 
 // fetch country specific data
 // countries.forEach(c => {
@@ -96,10 +96,10 @@ function plotCountryData(feature) {
 	let xTrace = [];
 	let yTrace = [];
 
-	for (let date = 0; date < feature[0].properties.corona_cases.length; date++) {
+	for (let date = 0; date < feature.properties.corona_cases.length; date++) {
 		console.log('here');
-		yTrace.push(feature[0].properties.corona_cases[date].count);
-		xTrace.push(feature[0].properties.corona_cases[date].date);
+		yTrace.push(feature.properties.corona_cases[date].count);
+		xTrace.push(feature.properties.corona_cases[date].date);
 	}
 
 	const countryTrace = {
