@@ -22,12 +22,30 @@ class CoronaChart {
 
 	constructor() {
 		this.div = 'corona-chart';
+		this.data = [];
 		fetch("/api/corona/Netherlands")
 			.then(response => response.json())
 			.then(json => {
 				const data = this.transformData(json);
 				this.chart = plotly.newPlot(this.div, data, {displayModeBar: false});
 			});
+	}
+
+	getTraces() {
+		return document.getElementById(this.div).data;
+	}
+
+	contains(feature) {
+		const traces = this.getTraces();
+		return traces.some(trace => trace.name === feature.properties.country);
+	}
+
+	removeData(feature) {
+		const traces = this.getTraces();
+		const index = traces.findIndex(t => t.name === feature.properties.country);
+		if (index >= 0) {
+			plotly.deleteTraces(this.div, index);
+		}
 	}
 
 	addData(feature) {
