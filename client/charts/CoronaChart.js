@@ -18,8 +18,7 @@ fetch("/api/cases").then(response => response.json()).then(json => plotData(json
 // })
 
 
-
-// plot all data 
+// plot all data
 function plotData(data) {
 
 	// UPDATE BUTTON
@@ -33,7 +32,7 @@ function plotData(data) {
 				},
 			],
 			direction: 'left',
-			pad: {'l': 100 },
+			pad: {'l': 100},
 			// showactive: true,
 			type: 'buttons',
 			xanchor: 'left',
@@ -69,7 +68,7 @@ function plotData(data) {
 		mode: 'markers',
 	};
 
-	var plotData = [fullTrace]
+	var plotData = [fullTrace];
 
 	// GENERAL LAYOUT
 	var layout = {
@@ -86,31 +85,33 @@ function plotData(data) {
 			ticks: 'outside',
 			tickcolor: '#000'
 		}
-	}
+	};
 
-	plotly.newPlot('flights-chart', plotData, layout, { displayModeBar: false });
+	plotly.newPlot('corona-chart', plotData, layout, {displayModeBar: false});
 }
 
 // plot data for a specific country
-function plotCountryData(data) {
+function plotCountryData(feature) {
 
-	var xTrace = [];
-	var yTrace = [];
+	let xTrace = [];
+	let yTrace = [];
 
-	for (let date = 0; date < data[0].properties.corona_cases.length; date++) {
-		console.log('here')
-		yTrace.push(data[0].properties.corona_cases[date].count)
-		xTrace.push(data[0].properties.corona_cases[date].date)
+	for (let date = 0; date < feature[0].properties.corona_cases.length; date++) {
+		console.log('here');
+		yTrace.push(feature[0].properties.corona_cases[date].count);
+		xTrace.push(feature[0].properties.corona_cases[date].date);
 	}
 
-	var countryTrace = {
+	const countryTrace = {
 		x: xTrace,
 		y: yTrace,
 		type: 'scatter',
 		mode: 'markers',
 	};
 
-	var data = [countryTrace]
+	const data = [countryTrace];
 
-	plotly.newPlot('flights-chart', data, { displayModeBar: false });
+	plotly.newPlot('corona-chart', data, {displayModeBar: false});
 }
+
+module.exports = {plotCountryData};

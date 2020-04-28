@@ -1,5 +1,6 @@
 const L = Object.assign({}, require('leaflet'), require("leaflet.markercluster"), require('leaflet-ajax'));
 const utils = require("../utils");
+const coronaChart = require("../charts/CoronaChart");
 
 
 /**
@@ -59,7 +60,7 @@ fetch("/api/corona").then(response => response.json())
 					`Country: <b>${feature.properties.country}</b><br />
 					Confirmed: <b>${feature.properties.confirmed}</b>`
 				);
-				marker.on('click', function(e){
+				marker.on('click', function (e) {
 					console.log(e.target.feature);
 				})
 				return marker;

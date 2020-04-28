@@ -5,12 +5,12 @@ const utils = require("../utils");
 /**
  * Class that implements Chart.js
  */
-class CoronaChart {
+class FlightChart {
 
 	constructor() {
 		this.chart = null;
-		this.title = $("h1#corona-title");
-		this.canvas = $("canvas#corona-chart")[0];
+		this.title = $("h1#flights-title");
+		this.canvas = $("canvas#flights-chart")[0];
 		this.createChart();
 	}
 
@@ -114,4 +114,4 @@ class CoronaChart {
 }
 
 
-module.exports = new CoronaChart();
+module.exports = new FlightChart();
