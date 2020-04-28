@@ -16,11 +16,28 @@
 - Sliding line over chart when play button clicked
 
 # **Tasks**
-*  Data collection (All)
+*  ~~Data collection(All)~~
 *  Data preprocessing (corona cases, flights data) (Assil)
+	- Add ALL countries corona data 
+	- Incoming/Departing data for flights (per country)
+	```
+	flight_data:{
+	    [0]:{
+	      incoming: 123
+	      outgoing: 13
+	      date: 2012-01-01
+	   }
+   }
+    ```
 *  Map (Joep)
-*  Corona chart (Zainab)
-*  Flights chart (Rowan)
+	- Change to cluster per continent:
+		- Two zoom-stages (1 cluster, 1 country markers)
+	- Flight data marker per country
+	- ~~Flight line visualization~~
+*  Corona chart (Rowan)
+*  Flights chart (Zeinab)
+	- Same scale for outgoing & incoming flights
+	- Line for incoming & outgoing flights per airport per country
 *  Storytelling (to be continued)
 *  Styling (All)
 *  Time series animation (Assil)
