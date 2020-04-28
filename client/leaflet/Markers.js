@@ -61,7 +61,7 @@ fetch("/api/corona").then(response => response.json())
 					Confirmed: <b>${feature.properties.confirmed}</b>`
 				);
 				marker.on('click', function (e) {
-					coronaChart.plotCountryData(e.target.feature);
+					coronaChart.addData(e.target.feature);
 				});
 				return marker;
 			},

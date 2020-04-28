@@ -8,7 +8,7 @@ const plotly = require("plotly.js-basic-dist");
 const countries = ["Brazil"];
 
 // fetch all data
-fetch("/api/cases").then(response => response.json()).then(json => plotData(json));
+// fetch("/api/cases").then(response => response.json()).then(json => plotData(json));
 
 // fetch country specific data
 // countries.forEach(c => {
@@ -16,6 +16,47 @@ fetch("/api/cases").then(response => response.json()).then(json => plotData(json
 // 		.then(response => response.json())
 // 		.then(json => plotCountryData(json));
 // })
+
+class CoronaChart {
+
+
+	constructor() {
+		this.div = 'corona-chart';
+		fetch("/api/corona/Netherlands")
+			.then(response => response.json())
+			.then(json => {
+				const data = this.transformData(json);
+				this.chart = plotly.newPlot(this.div, data, {displayModeBar: false});
+			});
+	}
+
+	addData(feature) {
+		const data = this.transformData(feature);
+		plotly.addTraces(this.div, data);
+	}
+
+	transformData(feature) {
+		let xTrace = [];
+		let yTrace = [];
+
+		for (let date = 0; date < feature.properties.corona_cases.length; date++) {
+			console.log('here');
+			yTrace.push(feature.properties.corona_cases[date].count);
+			xTrace.push(feature.properties.corona_cases[date].date);
+		}
+
+		const countryTrace = {
+			x: xTrace,
+			y: yTrace,
+			type: 'scatter',
+			mode: 'markers',
+			name: feature.properties.country
+		};
+
+		return [countryTrace];
+	}
+
+}
 
 
 // plot all data
@@ -114,4 +155,4 @@ function plotCountryData(feature) {
 	plotly.newPlot('corona-chart', data, {displayModeBar: false});
 }
 
-module.exports = {plotCountryData};
+module.exports = new CoronaChart();

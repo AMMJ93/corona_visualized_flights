@@ -85,7 +85,7 @@ router.get('/corona/:country', function (req, res, next) {
 	 * Get data from MongoDB
 	 * filter for one country
 	 */
-	models.coronaModel.find({'properties.Country_Re': req.params.country}, function (err, docs) {
+	models.coronaModel.find({'properties.country': req.params.country}, function (err, docs) {
 		if (err) {
 			res.render('error', {
 				status: 500
