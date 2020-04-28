@@ -5,29 +5,30 @@ const apikey = require("./plotly-secret").api_key;
  */
 const plotly = require("plotly.js-basic-dist");
 
-const countries = ["Brazil"];
-
-// fetch all data
-// fetch("/api/cases").then(response => response.json()).then(json => plotData(json));
-
-// fetch country specific data
-// countries.forEach(c => {
-// 	fetch("/api/" + c)
-// 		.then(response => response.json())
-// 		.then(json => plotCountryData(json));
-// })
-
 class CoronaChart {
-
 
 	constructor() {
 		this.div = 'corona-chart';
-		this.data = [];
+		this.layout = {
+			// width: 1200,
+			// height: 600,
+			responsive: true,
+			autosize: true,
+			// updatemenus: updatemenus,
+			xaxis: {
+				rangemode: 'tozero',
+				autorange: true
+			},
+			yaxis: {
+				ticks: 'outside',
+				tickcolor: '#000'
+			}
+		};
 		fetch("/api/corona/Netherlands")
 			.then(response => response.json())
 			.then(json => {
 				const data = this.transformData(json);
-				this.chart = plotly.newPlot(this.div, data, {displayModeBar: false});
+				this.chart = plotly.newPlot(this.div, data, this.layout, {displayModeBar: false});
 			});
 	}
 
@@ -130,47 +131,9 @@ function plotData(data) {
 	var plotData = [fullTrace];
 
 	// GENERAL LAYOUT
-	var layout = {
-		// width: 1200,
-		// height: 600,
-		responsive: true,
-		autosize: true,
-		updatemenus: updatemenus,
-		xaxis: {
-			rangemode: 'tozero',
-			autorange: true
-		},
-		yaxis: {
-			ticks: 'outside',
-			tickcolor: '#000'
-		}
-	};
+
 
 	plotly.newPlot('corona-chart', plotData, layout, {displayModeBar: false});
-}
-
-// plot data for a specific country
-function plotCountryData(feature) {
-
-	let xTrace = [];
-	let yTrace = [];
-
-	for (let date = 0; date < feature.properties.corona_cases.length; date++) {
-		console.log('here');
-		yTrace.push(feature.properties.corona_cases[date].count);
-		xTrace.push(feature.properties.corona_cases[date].date);
-	}
-
-	const countryTrace = {
-		x: xTrace,
-		y: yTrace,
-		type: 'scatter',
-		mode: 'markers',
-	};
-
-	const data = [countryTrace];
-
-	plotly.newPlot('corona-chart', data, {displayModeBar: false});
 }
 
 module.exports = new CoronaChart();
