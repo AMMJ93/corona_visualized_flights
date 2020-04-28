@@ -49,7 +49,6 @@ const markers = L.markerClusterGroup({
 	}
 });
 
-
 /**
  * Fetch data from MongoDB
  */
@@ -69,6 +68,9 @@ fetch("/api/corona").then(response => response.json())
 					`Country: <b>${feature.properties.country}</b><br />
 					Confirmed: <b>${feature.properties.confirmed}</b>`
 				);
+				marker.on('click', function(e){
+					console.log(e.target.feature);
+				})
 				return marker;
 			},
 		});
