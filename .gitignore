@@ -6,3 +6,5 @@ node_modules
 package-lock.json
 public/javascripts/app.js
 client/charts/plotly-secret.js
+**/flightlist*.csv.gz
+**/flightlist*.csv

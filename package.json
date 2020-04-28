@@ -5,7 +5,10 @@
   "scripts": {
     "watch": "watchify client/main.js -o public/javascripts/app.js -v",
     "build": "browserify client/main.js -o public/javascripts/app.js",
-    "start": "npm run watch & nodemon ./bin/www"
+    "node": "node ./bin/www",
+    "start": "run-script-os",
+    "start:win32": "concurrently --kill-others \"npm run watch\" \"npm run node\"\"",
+    "start:linux": "npm run watch & nodemon ./bin/www"
   },
   "dependencies": {
     "chart.js": "^2.9.3",
@@ -28,12 +31,14 @@
     "mongoose": "^5.9.10",
     "node-cmd": "3.0.0",
     "plotly.js-basic-dist": "^1.53.0",
-    "pug": "^2.0.0-beta11"
+    "pug": "^2.0.0-beta11",
+    "run-script-os": "1.0.7"
   },
   "devDependencies": {
     "beefy": "^2.1.8",
     "browserify": "^16.2.3",
     "compression": "^1.7.4",
+    "concurrently": "^4.1.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.2",
     "watchify": "^3.11.1"
