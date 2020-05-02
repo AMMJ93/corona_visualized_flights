@@ -2,6 +2,30 @@ const L = Object.assign({}, require('leaflet'), require("leaflet.markercluster")
 const utils = require("../utils");
 const coronaChart = require("../charts/CoronaChart");
 
+const colors = ['255,255,178', '254,217,118', '254,178,76', '253,141,60', '240,59,32', '189,0,38'];
+let bins = [];
+
+function createBins(featureCollection) {
+	const max = Math.max.apply(Math, featureCollection["features"].map(feature => feature.properties.confirmed));
+	const binSize = max / (colors.length - 1);
+	bins = [...Array(colors.length - 1).keys()];
+	for (const i in bins) {
+		bins[i] = (i * binSize + 1);
+	}
+	console.log(bins);
+}
+
+/**
+ * Returns the background color for the marker
+ * @param confirmed value of marker
+ * @param opacity 0 -> 1
+ * @returns {String} color
+ */
+function getColor(confirmed, opacity) {
+	const color = confirmed > bins[bins.length - 1] ? colors[bins.length]
+		: colors[bins.indexOf(bins.find(x => confirmed < x))];
+	return `rgba(${color}, ${opacity})`;
+}
 
 /**
  * Add custom functions to MarkerCluster struct
@@ -32,11 +56,11 @@ const markers = L.markerClusterGroup({
 		const totalCases = cluster.getTotalCases();
 
 		return new L.DivIcon({
+			iconSize: new L.Point(40, 40),
+			className: 'marker marker-cluster',
 			html: `<div>
 					<span class="marker-cluster-text">${utils.formatNumber(totalCases)}</span>
-				</div>`,
-			className: 'marker marker-cluster',
-			iconSize: new L.Point(40, 40)
+				</div>`
 		});
 	}
 });
@@ -46,14 +70,19 @@ const markers = L.markerClusterGroup({
  */
 fetch("/api/corona").then(response => response.json())
 	.then(featureCollection => {
+		createBins(featureCollection);
 		const layers = L.geoJSON(featureCollection, {
 			pointToLayer: function (feature, latlng) {
 				const confirmed = feature.properties.confirmed;
 				const marker = L.marker(latlng, {
 					icon: new L.DivIcon({
-						className: 'marker marker-single marker-medium',
 						iconSize: new L.Point(40, 40),
-						html: `<div><span class="marker-cluster-text">${utils.formatNumber(confirmed)}</span></div>`
+						className: 'country-markers',
+						html: `<div class="marker marker-single" style="background-color: ${getColor(confirmed, 0.4)}">
+								<div style="background-color: ${getColor(confirmed, 0.7)}">
+									<span class="marker-cluster-text">${utils.formatNumber(confirmed)}</span>
+								</div>
+							</div>`
 					})
 				});
 				marker.bindPopup(
