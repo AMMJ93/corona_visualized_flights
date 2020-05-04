@@ -10,18 +10,61 @@ class CoronaChart {
 	constructor() {
 		this.div = 'corona-chart';
 		this.layout = {
-			// width: 1200,
-			// height: 600,
-			responsive: true,
+			// width: 800,
+			// height: 1000,
+			responsive: false,
 			autosize: true,
+			showlegend: true,
+			shapes: [
+				// 1st highlight during Feb 4 - Feb 6
+				{
+					type: 'line',
+					x0: "2020-03-22",
+					yref:"paper",
+					y0: 0,
+					x1: "2020-03-22",
+					y1: 1,
+					line: {
+					  color: 'rgb(255, 0, 0)',
+					  width: 1
+					}
+				  },],
+			title: {
+				text:'Corona cases over time',
+				font: {
+				  family: 'Helvetica',
+				  size: 24
+				},
+				xref: 'paper',
+				x: 0.3,
+			  },
 			// updatemenus: updatemenus,
 			xaxis: {
 				rangemode: 'tozero',
-				autorange: true
+				// autorange: true,
+				showgrid: false,
+				range: ["2020-01-22 12:00:43.5045", new Date(Date())],
+				title: {
+					text: 'Date',
+					font: {
+					  family: 'Helvetica',
+					  size: 18,
+					  color: '#7f7f7f'
+					}
+				  },
 			},
 			yaxis: {
 				ticks: 'outside',
-				tickcolor: '#000'
+				tickcolor: '#000',
+				showline: true,
+				title: {
+					text: 'Number of cases',
+					font: {
+					  family: 'Helvetica',
+					  size: 18,
+					  color: '#7f7f7f'
+					}
+				  },
 			}
 		};
 		fetch("/api/corona/Netherlands")
@@ -68,12 +111,14 @@ class CoronaChart {
 			x: xTrace,
 			y: yTrace,
 			type: 'scatter',
-			mode: 'markers',
+			mode: 'lines+markers',
 			name: feature.properties.country
 		};
 
 		return [countryTrace];
 	}
+
+	
 
 }
 

@@ -8,7 +8,8 @@
     "node": "node ./bin/www",
     "start": "run-script-os",
     "start:win32": "concurrently --kill-others \"npm run watch\" \"npm run node\"\"",
-    "start:linux": "npm run watch & nodemon ./bin/www"
+    "start:linux": "npm run watch & nodemon ./bin/www",
+    "start:darwin": "npm run watch & nodemon ./bin/www"
   },
   "dependencies": {
     "chart.js": "^2.9.3",
