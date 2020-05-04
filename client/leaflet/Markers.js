@@ -1,9 +1,11 @@
 const L = Object.assign({}, require('leaflet'), require("leaflet.markercluster"), require('leaflet-ajax'));
 const utils = require("../utils");
 const coronaChart = require("../charts/CoronaChart");
+const map = require("./Map");
 
 const colors = ['255,255,178', '254,217,118', '254,178,76', '253,141,60', '240,59,32', '189,0,38'];
 let bins = [];
+let markers;
 
 function createBins(featureCollection) {
 	const max = Math.max.apply(Math, featureCollection["features"].map(feature => feature.properties.confirmed));
@@ -44,26 +46,27 @@ L.MarkerCluster.include({
  * Create MarkerClusterGroup variable
  * @type {L.MarkerClusterGroup}
  */
-const markers = L.markerClusterGroup({
-	maxClusterRadius: 120,
-	showCoverageOnHover: false,
-	/**
-	 * Customize creation of clusters
-	 * @param cluster
-	 * @returns {*}
-	 */
-	iconCreateFunction: function (cluster) {
-		const totalCases = cluster.getTotalCases();
-
-		return new L.DivIcon({
-			iconSize: new L.Point(40, 40),
-			className: 'marker marker-cluster',
-			html: `<div>
-					<span class="marker-cluster-text">${utils.formatNumber(totalCases)}</span>
-				</div>`
-		});
-	}
-});
+let markerGroup = L.layerGroup();
+// const markers = L.markerClusterGroup({
+// 	maxClusterRadius: 120,
+// 	showCoverageOnHover: false,
+// 	/**
+// 	 * Customize creation of clusters
+// 	 * @param cluster
+// 	 * @returns {*}
+// 	 */
+// 	iconCreateFunction: function (cluster) {
+// 		const totalCases = cluster.getTotalCases();
+//
+// 		return new L.DivIcon({
+// 			iconSize: new L.Point(40, 40),
+// 			className: 'marker marker-cluster',
+// 			html: `<div>
+// 					<span class="marker-cluster-text">${utils.formatNumber(totalCases)}</span>
+// 				</div>`
+// 		});
+// 	}
+// });
 
 /**
  * Fetch data from MongoDB
@@ -71,7 +74,7 @@ const markers = L.markerClusterGroup({
 fetch("/api/corona").then(response => response.json())
 	.then(featureCollection => {
 		createBins(featureCollection);
-		const layers = L.geoJSON(featureCollection, {
+		markers = L.geoJSON(featureCollection, {
 			pointToLayer: function (feature, latlng) {
 				const confirmed = feature.properties.confirmed;
 				const marker = L.marker(latlng, {
@@ -90,6 +93,7 @@ fetch("/api/corona").then(response => response.json())
 					Confirmed: <b>${feature.properties.confirmed}</b>`
 				);
 				marker.on('click', function (e) {
+					coronaChart.traverseLine();
 					const feature = e.target.feature;
 					if (coronaChart.contains(feature)) {
 						coronaChart.removeData(feature);
@@ -98,12 +102,14 @@ fetch("/api/corona").then(response => response.json())
 					}
 				});
 				return marker;
-			},
+			}
 		});
-		markers.addLayers(layers);
+		// markerGroup.addLayers(markers);
+		map.addLayer(markers);
 	});
 
 
 module.exports = markers;
+// module.exports = markerGroup;
 
 

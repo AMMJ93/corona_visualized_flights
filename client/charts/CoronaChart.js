@@ -1,5 +1,6 @@
 const username = require("./plotly-secret").username;
 const apikey = require("./plotly-secret").api_key;
+const utils = require("../utils");
 /**
  * This chart works with Plotly
  */
@@ -9,6 +10,7 @@ class CoronaChart {
 
 	constructor() {
 		this.div = 'corona-chart';
+		this.date = '2020-02-04';
 		this.layout = {
 			// width: 1200,
 			// height: 600,
@@ -59,7 +61,6 @@ class CoronaChart {
 		let yTrace = [];
 
 		for (let date = 0; date < feature.properties.corona_cases.length; date++) {
-			console.log('here');
 			yTrace.push(feature.properties.corona_cases[date].count);
 			xTrace.push(feature.properties.corona_cases[date].date);
 		}
@@ -75,65 +76,33 @@ class CoronaChart {
 		return [countryTrace];
 	}
 
-}
-
-
-// plot all data
-function plotData(data) {
-
-	// UPDATE BUTTON
-	var updatemenus = [
-		{
-			buttons: [
+	setVerticleLine(date) {
+		const dateString = $.format.date(date, "yyyy-MM-dd");
+		plotly.relayout(this.div, {
+			shapes: [
 				{
-					args: [],
-					label: 'Visualize over time',
-					method: 'update'
-				},
-			],
-			direction: 'left',
-			pad: {'l': 100},
-			// showactive: true,
-			type: 'buttons',
-			xanchor: 'left',
-			yanchor: 'top'
-		},
-	]
-
-	// ACTUAL DATA
-	var xTrace = [];
-	var yTrace = [];
-
-	// loops through all dates
-	for (let date = 0; date < data.features[0].properties.corona_cases.length; date++) {
-
-		var cases = 0;
-
-		// sum all corona cases for all countries on that date
-		for (let country = 0; country < data.features.length; country++) {
-			cases += data.features[country].properties.corona_cases[date].count
-		}
-
-		// add number of cases to yTrace and the dates from a single country (since the rest is exactly the same) to the yTrace
-		xTrace.push(data.features[0].properties.corona_cases[date].date)
-		yTrace.push(cases)
-
+					type: 'line',
+					yref: 'paper',
+					x0: dateString,
+					x1: dateString,
+					y0: 0,
+					y1: 1,
+					line: {
+						color: 'rgb(55, 128, 191)',
+						width: 3
+					}
+				}
+			]
+		});
+		this.date = date;
 	}
 
-	// ADD DATA TO X&Y TRACES
-	var fullTrace = {
-		x: xTrace,
-		y: yTrace,
-		type: 'scatter',
-		mode: 'markers',
-	};
+	traverseLine() {
+		const oldDate = new Date(this.date);
+		oldDate.setDate(oldDate.getDate() + 1);
+		this.setVerticleLine(oldDate);
+	}
 
-	var plotData = [fullTrace];
-
-	// GENERAL LAYOUT
-
-
-	plotly.newPlot('corona-chart', plotData, layout, {displayModeBar: false});
 }
 
 module.exports = new CoronaChart();
