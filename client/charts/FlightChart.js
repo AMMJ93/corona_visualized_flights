@@ -9,7 +9,6 @@ class FlightChart {
 
 	constructor() {
 		this.chart = null;
-		this.title = $("h1#flights-title");
 		this.canvas = $("canvas#flights-chart")[0];
 		this.createChart();
 	}
@@ -57,7 +56,7 @@ class FlightChart {
 				responsive: true,
 				title: {
 					display: true,
-					text: 'Chart.js Line Chart'
+					text: 'Flight visualization graph'
 				},
 				tooltips: {
 					mode: 'index',
