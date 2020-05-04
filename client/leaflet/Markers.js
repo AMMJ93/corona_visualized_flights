@@ -93,7 +93,6 @@ fetch("/api/corona").then(response => response.json())
 					Confirmed: <b>${feature.properties.confirmed}</b>`
 				);
 				marker.on('click', function (e) {
-					coronaChart.traverseLine();
 					const feature = e.target.feature;
 					if (coronaChart.contains(feature)) {
 						coronaChart.removeData(feature);
