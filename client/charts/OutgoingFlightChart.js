@@ -40,6 +40,10 @@ class OutgoingFlightChart {
 			  },
 			// updatemenus: updatemenus,
 			xaxis: {
+				showline: true,
+				// zeroline: true,
+				// zerolinecolor: '#000',
+				// zerolinewidth: 8,
 				rangemode: 'tozero',
 				// autorange: true,
 				showgrid: false,
@@ -54,6 +58,7 @@ class OutgoingFlightChart {
 				  },
 			},
 			yaxis: {
+				rangemode: 'tozero',
 				ticks: 'outside',
 				tickcolor: '#000',
 				showline: true,
@@ -111,7 +116,7 @@ class OutgoingFlightChart {
 			x: xTrace,
 			y: yTrace,
 			type: 'scatter',
-			mode: 'markers',
+			mode: 'lines+markers',
 			name: feature.properties.country
 		};
 

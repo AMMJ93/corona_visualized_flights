@@ -40,6 +40,7 @@ class IncomingFlightChart {
 			  },
 			// updatemenus: updatemenus,
 			xaxis: {
+				// showline: true,
 				rangemode: 'tozero',
 				// autorange: true,
 				showgrid: false,
@@ -54,6 +55,7 @@ class IncomingFlightChart {
 				  },
 			},
 			yaxis: {
+				rangemode: 'tozero',
 				ticks: 'outside',
 				tickcolor: '#000',
 				showline: true,
@@ -111,7 +113,7 @@ class IncomingFlightChart {
 			x: xTrace,
 			y: yTrace,
 			type: 'scatter',
-			mode: 'markers',
+			mode: 'lines+markers',
 			name: feature.properties.country
 		};
 
