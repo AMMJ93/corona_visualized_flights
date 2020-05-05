@@ -15,6 +15,8 @@ const coronaSchema = new Schema({
 		recovered: Number,
 		corona_cases: [],
 		corona_deaths: [],
+		incoming_flights:[],
+		outgoing_flights:[],
 		airports: {},
 		total_flights: []
 	},
