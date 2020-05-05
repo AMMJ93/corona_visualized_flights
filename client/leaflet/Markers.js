@@ -1,6 +1,8 @@
 const L = Object.assign({}, require('leaflet'), require("leaflet.markercluster"), require('leaflet-ajax'));
 const utils = require("../utils");
 const coronaChart = require("../charts/CoronaChart");
+const incomingchart = require("../charts/IncomingFlightChart");
+const outgoingchart = require("../charts/OutgoingFlightChart");
 const map = require("./Map");
 
 const colors = ['255,255,178', '254,217,118', '254,178,76', '253,141,60', '240,59,32', '189,0,38'];
@@ -96,8 +98,12 @@ fetch("/api/corona").then(response => response.json())
 					const feature = e.target.feature;
 					if (coronaChart.contains(feature)) {
 						coronaChart.removeData(feature);
+						incomingchart.removeData(feature);
+						outgoingchart.removeData(feature);
 					} else {
 						coronaChart.addData(feature);
+						incomingchart.addData(feature);
+						outgoingchart.addData(feature);
 					}
 				});
 				return marker;

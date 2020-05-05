@@ -12,7 +12,7 @@ class CoronaChart {
 		this.layout = {
 			// width: 800,
 			// height: 1000,
-			responsive: false,
+			responsive: true,
 			autosize: true,
 			showlegend: true,
 			shapes: [
