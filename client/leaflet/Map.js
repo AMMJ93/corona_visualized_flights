@@ -10,12 +10,15 @@ const map = L.map('map', {
 	zoomControl: false,
 	layers: [light],
 	timeDimension: true,
-    timeDimensionOptions: {
-        timeInterval: "2020-01-23/2020-04-17",
-        period: "P1D",
-		timeSliderDragUpdate: true
-    },
-    timeDimensionControl: true
+	timeDimensionOptions: {
+		timeInterval: "2020-01-23/2020-04-17",
+		period: "P1D",
+		timeSliderDragUpdate: true,
+		timeload: function (time) {
+			console.log(time);
+		}
+	},
+	timeDimensionControl: true
 }).setView([50.205, 11.425], 5);
 
 map.createPane('labels');

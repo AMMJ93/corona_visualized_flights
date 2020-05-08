@@ -20,24 +20,24 @@ class CoronaChart {
 				{
 					type: 'line',
 					x0: "2020-03-22",
-					yref:"paper",
+					yref: "paper",
 					y0: 0,
 					x1: "2020-03-22",
 					y1: 1,
 					line: {
-					  color: 'rgb(255, 0, 0)',
-					  width: 1
+						color: 'rgb(255, 0, 0)',
+						width: 1
 					}
-				  },],
+				},],
 			title: {
-				text:'Corona cases over time',
+				text: 'Corona cases over time',
 				font: {
-				  family: 'Helvetica',
-				  size: 24
+					family: 'Helvetica',
+					size: 24
 				},
 				xref: 'paper',
 				x: 0.3,
-			  },
+			},
 			// updatemenus: updatemenus,
 			xaxis: {
 				rangemode: 'tozero',
@@ -47,11 +47,11 @@ class CoronaChart {
 				title: {
 					text: 'Date',
 					font: {
-					  family: 'Helvetica',
-					  size: 18,
-					  color: '#7f7f7f'
+						family: 'Helvetica',
+						size: 18,
+						color: '#7f7f7f'
 					}
-				  },
+				},
 			},
 			yaxis: {
 				ticks: 'outside',
@@ -60,11 +60,11 @@ class CoronaChart {
 				title: {
 					text: 'Number of cases',
 					font: {
-					  family: 'Helvetica',
-					  size: 18,
-					  color: '#7f7f7f'
+						family: 'Helvetica',
+						size: 18,
+						color: '#7f7f7f'
 					}
-				  },
+				},
 			}
 		};
 		fetch("/api/corona/Netherlands")
@@ -102,7 +102,6 @@ class CoronaChart {
 		let yTrace = [];
 
 		for (let date = 0; date < feature.properties.corona_cases.length; date++) {
-			console.log('here');
 			yTrace.push(feature.properties.corona_cases[date].count);
 			xTrace.push(feature.properties.corona_cases[date].date);
 		}
@@ -117,65 +116,6 @@ class CoronaChart {
 
 		return [countryTrace];
 	}
-}
-
-
-// plot all data
-function plotData(data) {
-
-	// UPDATE BUTTON
-	var updatemenus = [
-		{
-			buttons: [
-				{
-					args: [],
-					label: 'Visualize over time',
-					method: 'update'
-				},
-			],
-			direction: 'left',
-			pad: {'l': 100},
-			// showactive: true,
-			type: 'buttons',
-			xanchor: 'left',
-			yanchor: 'top'
-		},
-	]
-
-	// ACTUAL DATA
-	var xTrace = [];
-	var yTrace = [];
-
-	// loops through all dates
-	for (let date = 0; date < data.features[0].properties.corona_cases.length; date++) {
-
-		var cases = 0;
-
-		// sum all corona cases for all countries on that date
-		for (let country = 0; country < data.features.length; country++) {
-			cases += data.features[country].properties.corona_cases[date].count
-		}
-
-		// add number of cases to yTrace and the dates from a single country (since the rest is exactly the same) to the yTrace
-		xTrace.push(data.features[0].properties.corona_cases[date].date)
-		yTrace.push(cases)
-
-	}
-
-	// ADD DATA TO X&Y TRACES
-	var fullTrace = {
-		x: xTrace,
-		y: yTrace,
-		type: 'scatter',
-		mode: 'markers',
-	};
-
-	var plotData = [fullTrace];
-
-	// GENERAL LAYOUT
-
-
-	plotly.newPlot('corona-chart', plotData, layout, {displayModeBar: false});
 }
 
 module.exports = new CoronaChart();
