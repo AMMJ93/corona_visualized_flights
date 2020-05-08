@@ -5,5 +5,10 @@ const inflightChart = require("./charts/IncomingFlightChart");
 const outflightChart = require("./charts/OutgoingFlightChart");
 
 
-
-// map.addLayer(markers);
+map.timeDimension.on("timeload", function (data) {
+	const date = new Date(map.timeDimension.getCurrentTime());
+	console.log($.format.date(date, "yyyy-MM-dd"));
+	coronaChart.setVerticleLine(date);
+	inflightChart.setVerticleLine(date);
+	outflightChart.setVerticleLine(date);
+});
