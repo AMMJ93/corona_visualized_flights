@@ -6,6 +6,7 @@ const outgoingchart = require("../charts/OutgoingFlightChart");
 const map = require("./Map");
 
 const colors = ['255,255,178', '254,217,118', '254,178,76', '253,141,60', '240,59,32', '189,0,38'];
+const sizes = ["20", "30px", "40px", "50px", "60px", "70px"];
 let bins = [0, 1000, 10000, 50000, 100000];
 let markerTimeLayer;
 
@@ -31,25 +32,34 @@ function getColor(confirmed, opacity) {
 	return `rgba(${color}, ${opacity})`;
 }
 
+function getIcon(confirmed){
+	const size = confirmed > bins[bins.length - 1] ? sizes[bins.length]
+		: sizes[bins.indexOf(bins.find(x => confirmed < x))];
+
+	return new L.DivIcon({
+					iconSize: [size, size],
+					className: 'country-markers',
+					// popupAnchor: [5, -1],
+					html: `<div class="circle" style="background: ${getColor(confirmed, 0.6)}; width: ${size}; height:${size}; line-height:${size}"> ${confirmed}
+							</div>`
+				})
+}
+
+
 function createLayerForDate(featureCollection, date) {
 	return L.geoJSON(featureCollection, {
 		pointToLayer: (feature, latlng) => {
 			const confirmed = feature.properties.corona_cases.find(d => d.date === date).count;
+
 			const marker = L.marker(latlng, {
-				icon: new L.DivIcon({
-					iconSize: new L.Point(40, 40),
-					className: 'country-markers',
-					html: `<div class="marker marker-single" style="background-color: ${getColor(confirmed, 0.4)}">
-								<div style="background-color: ${getColor(confirmed, 0.7)}">
-									<span class="marker-cluster-text">${utils.formatNumber(confirmed)}</span>
-								</div>
-							</div>`
-				})
+				icon: getIcon(confirmed)
 			});
-			marker.bindPopup(
+
+			marker.bindTooltip(
 				`Country: <b>${feature.properties.country}</b><br />
-					Confirmed: <b>${feature.properties.confirmed}</b>`
+					Confirmed: <b>${confirmed}</b>`
 			);
+
 			marker.on('click', function (e) {
 				const feature = e.target.feature;
 				if (coronaChart.contains(feature)) {
