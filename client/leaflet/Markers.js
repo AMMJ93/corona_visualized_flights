@@ -1,4 +1,4 @@
-const L = Object.assign({}, require('leaflet'), require("leaflet.markercluster"), require('leaflet-ajax'), require('leaflet-timedimension'));
+const L = Object.assign({}, require('leaflet'), require('leaflet-ajax'), require('leaflet-timedimension'));
 const utils = require("../utils");
 const coronaChart = require("../charts/CoronaChart");
 const incomingchart = require("../charts/IncomingFlightChart");
@@ -32,17 +32,17 @@ function getColor(confirmed, opacity) {
 	return `rgba(${color}, ${opacity})`;
 }
 
-function getIcon(confirmed){
+function getIcon(confirmed) {
 	const size = confirmed > bins[bins.length - 1] ? sizes[bins.length]
 		: sizes[bins.indexOf(bins.find(x => confirmed < x))];
 
 	return new L.DivIcon({
-					iconSize: [size, size],
-					className: 'country-markers',
-					// popupAnchor: [5, -1],
-					html: `<div class="circle" style="background: ${getColor(confirmed, 0.6)}; width: ${size}; height:${size}; line-height:${size}"> ${confirmed}
+		iconSize: [size, size],
+		className: 'country-markers',
+		// popupAnchor: [5, -1],
+		html: `<div class="circle" style="background: ${getColor(confirmed, 0.6)}; width: ${size}; height:${size}; line-height:${size}"> ${confirmed}
 							</div>`
-				})
+	})
 }
 
 
@@ -93,12 +93,20 @@ const MarkerTimeLayer = L.TimeDimension.Layer.extend({
 		}
 	},
 
+	onAdd: function (map) {
+		L.TimeDimension.Layer.prototype.onAdd.call(this, map);
+		this._map.addLayer(this._baseLayer);
+	},
+
 	_onNewTimeLoading: function (ev) {
 		var layer = this._getLayerForTime(ev.time);
-		
+
+
 		//Remove all old layers before adding new one
 		Object.keys(this._layers).forEach(t => this._map.removeLayer(this._layers[t]));
-
+		if (this._map.hasLayer(this._baseLayer)) {
+			this._map.removeLayer(this._baseLayer);
+		}
 		if (!this._map.hasLayer(layer)) {
 			this._map.addLayer(layer);
 		}
@@ -127,40 +135,7 @@ const MarkerTimeLayer = L.TimeDimension.Layer.extend({
  */
 fetch("/api/corona").then(response => response.json())
 	.then(featureCollection => {
-		// createBins(featureCollection);
-		const baseLayer = L.geoJSON(featureCollection, {
-			pointToLayer: function (feature, latlng) {
-				const confirmed = feature.properties.confirmed;
-				const marker = L.marker(latlng, {
-					icon: new L.DivIcon({
-						iconSize: new L.Point(40, 40),
-						className: 'country-markers',
-						html: `<div class="marker marker-single" style="background-color: ${getColor(confirmed, 0.4)}">
-								<div style="background-color: ${getColor(confirmed, 0.7)}">
-									<span class="marker-cluster-text">${utils.formatNumber(confirmed)}</span>
-								</div>
-							</div>`
-					})
-				});
-				marker.bindPopup(
-					`Country: <b>${feature.properties.country}</b><br />
-					Confirmed: <b>${feature.properties.confirmed}</b>`
-				);
-				marker.on('click', function (e) {
-					const feature = e.target.feature;
-					if (coronaChart.contains(feature)) {
-						coronaChart.removeData(feature);
-						incomingchart.removeData(feature);
-						outgoingchart.removeData(feature);
-					} else {
-						coronaChart.addData(feature);
-						incomingchart.addData(feature);
-						outgoingchart.addData(feature);
-					}
-				});
-				return marker;
-			}
-		});
+		const baseLayer = createLayerForDate(featureCollection, "2020-04-17");
 		markerTimeLayer = new MarkerTimeLayer(featureCollection, baseLayer, {});
 		markerTimeLayer.addTo(map);
 	});

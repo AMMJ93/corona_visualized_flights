@@ -47,7 +47,7 @@ const timeDimensionControlOptions = {
 	player: player,
 	timeDimension: timeDimension,
 	position: 'bottomleft',
-	autoPlay: true,
+	autoPlay: false,
 	minSpeed: 1,
 	speedStep: 1,
 	maxSpeed: 15,

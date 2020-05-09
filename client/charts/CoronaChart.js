@@ -39,10 +39,10 @@ const layout = {
 		// 1st highlight during Feb 4 - Feb 6
 		{
 			type: 'line',
-			x0: "2020-03-22",
+			x0: "2020-4-17",
+			x1: "2020-4-17",
 			yref: "paper",
 			y0: 0,
-			x1: "2020-03-22",
 			y1: 1,
 			line: {
 				color: 'rgb(255, 0, 0)',
