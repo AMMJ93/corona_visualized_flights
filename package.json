@@ -26,6 +26,7 @@
     "identifier": "0.0.0",
     "leaflet": "^1.5.1",
     "leaflet-ajax": "^2.1.0",
+    "leaflet-easybutton": "^2.4.0",
     "leaflet-label": "^0.2.1-0",
     "leaflet-labeled-circle": "^1.0.3",
     "leaflet-providers": "^1.9.1",

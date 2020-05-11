@@ -5,9 +5,9 @@ const incomingchart = require("../charts/IncomingFlightChart");
 const outgoingchart = require("../charts/OutgoingFlightChart");
 const map = require("./Map");
 
-const colors = ['255,255,178', '254,217,118', '254,178,76', '253,141,60', '240,59,32', '189,0,38'];
-const sizes = ["20", "30px", "40px", "50px", "60px", "70px"];
-let bins = [0, 1000, 10000, 50000, 100000];
+const colors = ['255,255,163', '255,255,163', '255,237,160', '254,217,118', '254,178,76', '253,141,60', '252,78,42', '227,26,28', '189,0,38', '128,0,38'];
+const sizes = ["20px", "25px", "30px", "35px", "40px", "45px", "50px", "55px", "60px", "70px"];
+let bins = [0, 50, 100, 200, 500, 1000, 10000, 50000, 150000, 200000];
 let markerTimeLayer;
 
 function createBins(featureCollection) {
