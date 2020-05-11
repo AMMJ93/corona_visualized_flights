@@ -37,7 +37,7 @@ const layout = {
 		rangemode: 'tozero',
 		// autorange: true,
 		showgrid: false,
-		range: ["2020-01-22 12:00:43.5045", new Date(Date())],
+		range: ["2020-01-22 12:00:43.5045", "2020-04-18 12:00:43.5045"], //new Date(Date())],
 		title: {
 			text: 'Date',
 			font: {
