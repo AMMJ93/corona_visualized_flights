@@ -54,13 +54,24 @@ const timeDimensionControlOptions = {
 	timeSliderDragUpdate: true
 };
 
+L.Control.TimeDimension.include({
+	_getDisplaySpeed: function (fps) {
+		return fps + ' fps';
+	},
+
+	_getDisplayDateFormat: function (date) {
+		// return date.format("dS mmmm yyyy");
+		// return date.longDateFormat();
+		return `<b>${$.format.date(date, "yyyy-MM-dd")}</b>`;
+	}
+});
 const timeDimensionControl = new L.Control.TimeDimension(timeDimensionControlOptions);
 
 map.addControl(timeDimensionControl);
 map.timeDimension = timeDimension;
 
-L.easyButton('<img src="/icons/bell.png">', function(){
-  alert('You are subscribed to updates!');
+L.easyButton('<img src="/icons/bell.png">', function () {
+	alert('You are subscribed to updates!');
 }).addTo(map);
 
 
