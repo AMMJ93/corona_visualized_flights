@@ -1,3 +1,5 @@
+![Final product](teaser.png)
+
 # **Decisions:**
 
 - Show corona on map
